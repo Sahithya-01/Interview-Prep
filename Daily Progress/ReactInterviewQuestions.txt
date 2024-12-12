@@ -1,0 +1,57 @@
+#createPortal
+createPortal lets you render some children into a different part of the DOM.
+
+<div>
+  <SomeComponent />
+  {createPortal(children, domNode, key?)}
+</div>
+
+Example:
+import { createPortal } from 'react-dom';
+
+// ...
+
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body
+  )}
+</div>
+
+
+#lazyLoading
+
+Import React.lazy() and Suspense:
+
+
+import React, { Suspense } from "react";
+Use React.lazy() to Dynamically Import Components:
+
+
+const About = React.lazy(() => import('./About'));
+const Contact = React.lazy(() => import('./Contact'));
+Wrap Components with Suspense:
+
+
+<Suspense fallback={<div>Loading...</div>}>
+  <About />
+  <Contact />
+</Suspense>
+
+Use with React Router (if applicable):
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+<Router>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+    </Routes>
+  </Suspense>
+</Router>
+
+Ensure the components are only loaded when requested, improving performance.
+
+

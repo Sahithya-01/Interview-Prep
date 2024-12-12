@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
-function App() {
+function TodoApp() {
   const [todoList, setTodoList] = useState([])
   const [todoInput, setTodoInput] = useState('')
 
@@ -50,4 +50,4 @@ function App() {
   )
 }
 
-export default App
+export default TodoApp
