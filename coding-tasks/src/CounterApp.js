@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const App = () => {
+const CounterApp = () => {
     const [count, setCount] = useState(0);
   return (
     <div>
@@ -12,4 +12,4 @@ const App = () => {
   )
 }
 
-export default App
+export default CounterApp
