@@ -4,20 +4,50 @@ const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState(5)
   const [isRunning, setIsRunning] = useState(false)
 
-  useEffect(() => {
-    let timer
-    if (isRunning && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1)
-      }, 1000)
-    } else if (timeLeft === 0) {
-      console.log('Sound is playing')
-      clearInterval(timer)
-      setIsRunning(false)
-    }
+useEffect(()=>{
+let timer;
+if(timeLeft>0 && isRunning){
+    timer = setInterval(()=>{
+    setTimeLeft((prevTime)=>prevTime-1)
+    },1000)
+}
+else if(timeLeft==0){
+    clearInterval(timer)
+    setIsRunning(false)
+}
+return clearInterval(timer)
 
-    return () => clearInterval(timer)
-  }, [isRunning, timeLeft])
+
+},[timeLeft,setTimeLeft])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   useEffect(() => {
+//     let timer
+//     if (isRunning && timeLeft > 0) {
+//       timer = setInterval(() => {
+//         setTimeLeft((prevTime) => prevTime - 1)
+//       }, 1000)
+//     } else if (timeLeft === 0) {
+//       console.log('Sound is playing')
+//       clearInterval(timer)
+//       setIsRunning(false)
+//     }
+
+//     return () => clearInterval(timer)
+//   }, [isRunning, timeLeft])
 
   const handleReset = () => {
     setIsRunning(false)
