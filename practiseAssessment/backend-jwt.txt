@@ -1,0 +1,656 @@
+
+
+
+
+
+You said:
+NodeJS: Authentication using JWT
+
+Project Specifications
+
+Implement a REST API to manage authentication using JWT (JSON Web Token).
+
+The task is to implement an Auth API using User model which exposes the following:
+
+POST request to/login:
+
+creates a new JWT every time
+
+expects a username and password of the user in the request body
+
+Checks if the username and password are correct from the DB
+
+Saves the JWT in the User table
+
+the response code is 200 on the successful token creation, and the response body is the JWT token
+
+POST request to/validate:
+
+decodes the JWT
+
+expects the JWT in the request body
+
+the response code is 200 on the successful taken decode, and the response body is the username of the user
+
+User Model
+
+Id: The unique id of the user (integer)
+
+username: The unique username of the user (String)
+
+password. The password of the user (String)
+token: The latest JWT (String)
+
+م
+
+Notes
+
+Replace the newly created JWT with the older one in the User table
+
+• Encode the username and current timestamp in the JWT body like the following -
+
+{
+
+username: <Username>,
+
+timestamp: <Current_Timestamp>
+
+}
+
+Use Sequelize ORM to fetch/update User data.
+
+Get the secret of JWT from the .env file programmatically.
+
+► Example
+
+Complete the project so that it passes the unit tests, Please check test/index.spec.js
+
+Environment
+
+Node Version: v14(LTS)
+
+• Default Port: 8000
+
+Read-only files:
+
+test/ spec.js
+
+*
+
+fixtures/data.json
+• connection.js
+
+seed.js
+
+• models/users.js
+
+index.js
+challenge > routes> index.js
+
+1 const router = require("express").Router();
+
+2
+
+3
+
+module.exports = router;
+
+challenge>fixtures>data.json
+
+
+[
+  {
+    "model": "users",
+    "data": {
+      "id": 1,
+      "username": "BradyMoss",
+      "password": "loremIpsum"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 2,
+      "username": "pomegranateapplepig",
+      "password": "establishedfact"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 3,
+      "username": "pomegranatepieabloom",
+      "password": "distracteduser"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 4,
+      "username": "DionneWall",
+      "password": "readablePass"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 5,
+      "username": "BradshawCote",
+      "password": "passages"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 6,
+      "username": "Saundersfarley",
+      "password": "classicalLatin"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 7,
+      "username": "Sloanroman",
+      "password": "desktop"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 8,
+      "username": "Jarvisporter",
+      "password": "collegePass"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 9,
+      "username": "Beatricemoon",
+      "password": "typeSetting"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 10,
+      "username": "Jacklynknowles",
+      "password": "Electronic"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 11,
+      "username": "SearsBarnes",
+      "password": "writtenLog"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 12,
+      "username": "AlissaRowland",
+      "password": "reproducedAtom"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 13,
+      "username": "StefanieMcclain",
+      "password": "injectedHumour"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 14,
+      "username": "CarverFoley",
+      "password": "handFulModel"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 15,
+      "username": "unpackcolossal",
+      "password": "factchecker"
+    }
+  }
+]
+
+
+  {
+    "model": "users",
+    "data": {
+      "id": 1,
+      "username": "BradyMoss",
+      "password": "loremIpsum"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 2,
+      "username": "pomegranateapplepig",
+      "password": "establishedfact"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 3,
+      "username": "pomegranatepieabloom",
+      "password": "distracteduser"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 4,
+      "username": "DionneWall",
+      "password": "readablePass"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 5,
+      "username": "BradshawCote",
+      "password": "passages"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 6,
+      "username": "Saundersfarley",
+      "password": "classicalLatin"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 7,
+      "username": "Sloanroman",
+      "password": "desktop"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 8,
+      "username": "Jarvisporter",
+      "password": "collegePass"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 9,
+      "username": "Beatricemoon",
+      "password": "typeSetting"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 10,
+      "username": "Jacklynknowles",
+      "password": "Electronic"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 11,
+      "username": "SearsBarnes",
+      "password": "writtenLog"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 12,
+      "username": "AlissaRowland",
+      "password": "reproducedAtom"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 13,
+      "username": "StefanieMcclain",
+      "password": "injectedHumour"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 14,
+      "username": "CarverFoley",
+      "password": "handFulModel"
+    }
+  },
+  {
+    "model": "users",
+    "data": {
+      "id": 15,
+      "username": "unpackcolossal",
+      "password": "factchecker"
+    }
+  }
+]
+
+
+connection.js:
+const { Sequelize } = require("sequelize");
+const sequelize = new Sequelize("sqlite::memory:");
+const Users = require("./models/users");
+const seed = require("./seed");
+
+let promise;
+module.exports = {
+  initialize: () => {
+    if (promise) {
+      return promise;
+    } else {
+      promise = sequelize
+        .authenticate()
+        .then((result) => {
+          console.log(SQLite successfully connected!);
+          return Users.sync();
+        })
+        .then((result) => {
+          console.log(Users table created);
+          return seed.load();
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error("Unable to connect to SQLite database:", error);
+        });
+      return promise;
+    }
+  },
+};
+
+
+challenges>models>users.js
+
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = new Sequelize("sqlite::memory:");
+
+const Users = sequelize.define(
+  "users",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+    },
+    password: {
+      type: DataTypes.STRING,
+    },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
+  },
+  { timestamps: false }
+);
+
+module.exports = Users;
+
+seed.js
+const sequelize_fixtures = require("sequelize-fixtures");
+const Users = require("./models/users");
+
+module.exports = {
+  load: () => {
+    return sequelize_fixtures
+      .loadFile("fixtures/*.json", { users: Users })
+      .then(() => {
+        console.log("Loaded seed data");
+      })
+      .catch((err) => {
+        console.log("Error seeding data", err);
+      });
+  },
+};
+challenge>test>index.spec.js
+
+const chai = require("chai");
+const { expect } = require("chai");
+const chaiHttp = require("chai-http");
+const Users = require("../models/users");
+const connection = require("../connection");
+
+const app = require("../index");
+
+chai.use(chaiHttp);
+
+const port = process.env.PORT || 8000;
+const server = app.listen(port);
+
+let responseData, responseKeys, newToken;
+
+before(async () => {
+  await connection.initialize();
+});
+
+describe("JWT Auth APIs", () => {
+  describe("Tests for Create JWT", () => {
+    it("#1 - should return JWT for the user Brady", async () => {
+      const requestBody = {
+        username: "BradyMoss",
+        password: "loremIpsum",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      responseData = response.body;
+      responseKeys = Object.keys(responseData);
+      expect(response.status).to.be.equal(200);
+      expect(responseKeys.length).to.be.equal(1);
+      expect(responseKeys[0]).to.be.equal("token");
+      expect(typeof responseData.token).to.be.equal("string");
+    });
+    it("#2 - should save JWT of the user in users table", async () => {
+      const result = await Users.findByPk(1, { raw: true });
+
+      expect(result.token).to.be.equal(responseData.token);
+    });
+    it("#3 - should return new JWT after login API again", async () => {
+      const oldToken = responseData.token;
+      const requestBody = {
+        username: "BradyMoss",
+        password: "loremIpsum",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      newToken = response.body.token;
+
+      expect(response.status).to.be.equal(200);
+      expect(response.body.token).to.be.not.equal(oldToken);
+    });
+    it("#4 - should return 401 in case of incorrect username", async () => {
+      const requestBody = {
+        username: "wrongUsername",
+        password: "loremIpsum",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+    it("#5 - should return 401 in case of incorrect password", async () => {
+      const requestBody = {
+        username: "BradyMoss",
+        password: "wrongPassword",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+    it("#6 - should return 401 in case of empty username", async () => {
+      const requestBody = {
+        username: "",
+        password: "wrongPassword",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+    it("#7 - should return 401 in case of empty password", async () => {
+      const requestBody = {
+        username: "BradyMoss",
+        password: "",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+    it("#8 - should return 401 in case of username not present", async () => {
+      const requestBody = {
+        password: "loremIpsum",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+    it("#9 - should return 401 in case of password not present", async () => {
+      const requestBody = {
+        username: "BradyMoss",
+      };
+      const response = await chai
+        .request(server)
+        .post("/login")
+        .send(requestBody);
+      expect(response.status).to.be.equal(401);
+    });
+  });
+  describe("Tests for Validate JWT", () => {
+    it("#1 - should return username of Brady from the JWT", async () => {
+      const requestBody = {
+        token: newToken,
+      };
+      const response = await chai
+        .request(server)
+        .post("/validate")
+        .send(requestBody);
+
+      expect(response.status).to.be.equal(200);
+      expect(response.body.username).to.be.equal("BradyMoss");
+    });
+    it("#2 - should send 401 in case of old JWT", async () => {
+      const requestBody = {
+        token: responseData.token,
+      };
+      const response = await chai
+        .request(server)
+        .post("/validate")
+        .send(requestBody);
+
+      expect(response.status).to.be.equal(401);
+    });
+    it("#3 - should return 401 in case of invalid JWT", async () => {
+      const requestBody = {
+        token: "someRandomJWT",
+      };
+      const response = await chai
+        .request(server)
+        .post("/validate")
+        .send(requestBody);
+
+      expect(response.status).to.be.equal(401);
+    });
+  });
+});
+
+## Read-only Files
+The following files are marked read-only. You cannot edit these files
+in the editor; however, it is possible from the terminal. You must not
+modify or delete these files because doing so results in a zero score.
+
+* connection.js
+* fixtures/data.json
+* models/users.js
+* seed.js
+* test/index.spec.js
+
+Solution:
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const router = express.Router();
+const Users = require('../models/users');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
+
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(401).send('Username and password are required');
+  }
+
+  try {
+    const user = await Users.findOne({ where: { username, password } });
+
+    if (!user) {
+      return res.status(401).send('Invalid credentials');
+    }
+
+    const token = jwt.sign(
+      { username, timestamp: new Date().toISOString() },
+      JWT_SECRET
+    );
+
+    await Users.update({ token }, { where: { id: user.id } });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    return res.status(500).send('Internal server error');
+  }
+});
+
+router.post('/validate', async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(401).send('Token is required');
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await Users.findOne({ where: { username: decoded.username, token } });
+
+    if (!user) {
+      return res.status(401).send('Token is invalid or expired');
+    }
+
+    return res.status(200).json({ username: decoded.username });
+  } catch (error) {
+    return res.status(401).send('Invalid token');
+  }
+});
+
+module.exports = router;
